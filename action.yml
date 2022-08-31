@@ -40,7 +40,7 @@ runs:
       run: echo "::set-output name=cache-key::$($GITHUB_ACTION_PATH/setup.sh -p cache-key -k ${{ inputs.cache-key }} -n '${{ inputs.flutter-version }}' -a '${{ inputs.architecture }}' ${{ inputs.channel }})"
       shell: bash
     - if: ${{ inputs.cache == 'true' }}
-      uses: actions/cache@v3
+      uses: Adapta-Innovation/cache@v3
       with:
         path: ${{ steps.flutter-action-cache-path-builder.outputs.cache-path }}
         key: ${{ steps.flutter-action-cache-key-builder.outputs.cache-key }}
