@@ -11,7 +11,7 @@ jobs:
   lint_shellcheck:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: Adapta-Innovation/checkout@v3
     - uses: ludeeus/action-shellcheck@master
   test_channel:
     runs-on: ${{ matrix.operating-system }}
@@ -20,7 +20,7 @@ jobs:
         operating-system: [ubuntu-latest, windows-latest, macos-latest]
         channel: [stable, beta, master]
     steps:
-    - uses: actions/checkout@v3
+    - uses: Adapta-Innovation/checkout@v3
     - uses: ./
       with:
         channel: ${{ matrix.channel }}
@@ -34,7 +34,7 @@ jobs:
       matrix:
         operating-system: [ubuntu-latest, windows-latest, macos-latest]
     steps:
-    - uses: actions/checkout@v3
+    - uses: Adapta-Innovation/checkout@v3
     - uses: ./
       with:
         channel: stable
@@ -46,7 +46,7 @@ jobs:
   test_version:
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: Adapta-Innovation/checkout@v3
     - run: ./setup.sh -t -p version                    | grep -x 'stable:any:x64|stable:3.0.5:x64'
       shell: bash
     - run: ./setup.sh -t -p version stable             | grep -x 'stable:any:x64|stable:3.0.5:x64'
@@ -78,7 +78,7 @@ jobs:
   test_cache_key:
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: Adapta-Innovation/checkout@v3
     - run: ./setup.sh -t -p cache-key                  | grep -x 'flutter-macos-stable-3.0.5-x64-f1875d570e39de09040c8f79aa13cc56baab8db1'
       shell: bash
     - run: ./setup.sh -t -p cache-key stable           | grep -x 'flutter-macos-stable-3.0.5-x64-f1875d570e39de09040c8f79aa13cc56baab8db1'
@@ -114,7 +114,7 @@ jobs:
   test_cache_path:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: Adapta-Innovation/checkout@v3
     - run: ./setup.sh -t -p cache-path                  | grep -x '/home/runner/work/_temp/flutter/stable-3.0.5-x64'
       shell: bash
     - run: ./setup.sh -t -p cache-path stable           | grep -x '/home/runner/work/_temp/flutter/stable-3.0.5-x64'
