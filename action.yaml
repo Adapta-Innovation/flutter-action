@@ -76,15 +76,22 @@ outputs:
   GIT_SOURCE:
     value: "${{ steps.flutter-action.outputs.GIT_SOURCE }}"
     description: Git source of Flutter SDK repository to clone
+  CACHE-HIT:
+    value: "${{ steps.cache-flutter.outputs.cache-hit }}"
+    description: "`true` if the flutter cache was a hit"
+  PUB-CACHE-HIT:
+    value: "${{ steps.cache-pub.outputs.cache-hit }}"
+    description: "`true` if the pub cache was a hit"
 
 runs:
   using: composite
   steps:
-    # This is a cross-platform composite action that needs yq.
+    # This is a cross-platform composite action that needs yq in order to parse
+    # the pubspec.yaml file.
     # It's not preinstalled on Windows runners.
     # See https://github.com/actions/runner-images/issues/7443#issuecomment-1514597691
     - name: Make yq tool available on Windows runners
-      if: runner.os == 'Windows'
+      if: runner.os == 'Windows' && inputs.flutter-version-file != ''
       run: choco install yq
       shell: bash
 
@@ -108,6 +115,7 @@ runs:
           ${{ inputs.channel }}
 
     - name: Cache Flutter
+      id: cache-flutter
       uses: actions/cache@v4
       if: ${{ inputs.cache == 'true' }}
       with:
@@ -116,6 +124,7 @@ runs:
 
     - name: Cache pub dependencies
       uses: actions/cache@v4
+      id: cache-pub
       if: ${{ inputs.cache == 'true' }}
       with:
         path: ${{ steps.flutter-action.outputs.PUB-CACHE-PATH }}
